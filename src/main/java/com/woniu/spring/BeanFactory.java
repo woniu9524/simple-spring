@@ -9,4 +9,7 @@ import com.woniu.spring.exception.BeansException;
  */
 public interface BeanFactory {
     Object getBean(String beanName) throws BeansException;
+
+    //重载了一个含有入参信息 args，这样就可以方便的传递入参给构造函数实例化了。
+    Object getBean(String beanName, Object... args) throws BeansException;
 }

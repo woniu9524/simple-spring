@@ -1,5 +1,6 @@
 package com.woniu.spring.factory.support;
 
+import com.woniu.spring.exception.BeansException;
 import com.woniu.spring.factory.config.BeanDefinition;
 import com.woniu.spring.BeanFactory;
 
@@ -15,17 +16,26 @@ import com.woniu.spring.BeanFactory;
 public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory {
     @Override
     public Object getBean(String beanName) {
+        return doGetBean(beanName,null);
+    }
+
+    @Override
+    public Object getBean(String beanName, Object... args) throws BeansException {
+        return doGetBean(beanName,args);
+    }
+
+    protected <T> T doGetBean(final String beanName,final Object[] args){
         //从单例池中获取bean
         Object bean=getSingleton(beanName);
         if (bean!=null){
-            return bean;
+            return (T)bean;
         }
         //无法从单例池中获取时创建bean,此处体现了设计模式中的模板方法
         BeanDefinition beanDefinition=getBeanDefinition(beanName);
-        return createBean(beanName,beanDefinition);
+        return (T)createBean(beanName,beanDefinition,args);
     }
 
     protected abstract BeanDefinition getBeanDefinition(String beanName);
 
-    protected abstract Object createBean(String beanName,BeanDefinition beanDefinition);
+    protected abstract Object createBean(String beanName,BeanDefinition beanDefinition,Object[] args);
 }
