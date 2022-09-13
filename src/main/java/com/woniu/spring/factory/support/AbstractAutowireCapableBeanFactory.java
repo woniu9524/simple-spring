@@ -1,8 +1,12 @@
 package com.woniu.spring.factory.support;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.sun.jmx.snmp.BerException;
+import com.woniu.spring.PropertyValue;
+import com.woniu.spring.PropertyValues;
 import com.woniu.spring.exception.BeansException;
 import com.woniu.spring.factory.config.BeanDefinition;
+import com.woniu.spring.factory.config.BeanReference;
 
 import java.lang.reflect.Constructor;
 
@@ -18,12 +22,18 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     @Override
     protected Object createBean(String beanName, BeanDefinition beanDefinition,Object[] args) {
         Object bean=null;
-        //这里通过从beanDefinition拿到bean的class然后无参构造器实例化出bean对象并放到单例池中
+        //这里通过从beanDefinition拿到bean的class然后无参构造器实例化出bean对象
         bean=createBeanInstance(beanDefinition,beanName,args);
+
+        //给 Bean 填充属性
+        applyPropertyValues(beanName, bean, beanDefinition);
+
+        //放到单例池中
         addSingleton(beanName,bean);
         return bean;
     }
 
+    //创建bean实例
     protected Object createBeanInstance(BeanDefinition beanDefinition, String beanName, Object[] args) {
         Class clazz=beanDefinition.getBeanClass();
         Constructor constructorToUse=null;//符合入参信息相对应的构造函数
@@ -38,5 +48,31 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             }
         }
         return instantiationStrategy.instantiate(beanDefinition,beanName,constructorToUse,args);
+    }
+
+    //对象填充属性
+    protected void applyPropertyValues(String beanName, Object bean, BeanDefinition beanDefinition) {
+        PropertyValues propertyValues = beanDefinition.getPropertyValues();
+        for (PropertyValue propertyValue : propertyValues.getPropertyValues()) {
+            String name=propertyValue.getName();
+            Object value = propertyValue.getValue();
+
+            //引用类型
+            if (value instanceof BeanReference){
+                // A 依赖 B，获取 B 的实例化
+                BeanReference beanReference = (BeanReference) value;
+                value = getBean(beanReference.getBeanName());
+            }
+            // 属性填充
+            BeanUtil.setFieldValue(bean, name, value);
+        }
+    }
+
+    public InstantiationStrategy getInstantiationStrategy() {
+        return instantiationStrategy;
+    }
+
+    public void setInstantiationStrategy(InstantiationStrategy instantiationStrategy) {
+        this.instantiationStrategy = instantiationStrategy;
     }
 }

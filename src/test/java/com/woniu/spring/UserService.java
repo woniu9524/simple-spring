@@ -6,24 +6,14 @@ package com.woniu.spring;
  * @Description: UserService类
  */
 public class UserService {
-    private String name;
 
-    public UserService() {
-    }
+    private String uId;
 
-
-    public UserService(String name) {
-        this.name = name;
-    }
+    private UserDao userDao;
 
     public void queryUserInfo() {
-        System.out.println("查询用户信息：" + name);
+        System.out.println("查询用户信息：" + userDao.queryUserName(uId));
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("");
-        sb.append("").append(name);
-        return sb.toString();
-    }
+    // ...get/set
 }
