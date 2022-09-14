@@ -1,6 +1,6 @@
-package com.woniu.spring.factory.config;
+package com.woniu.spring.beans.factory.config;
 
-import com.woniu.spring.PropertyValues;
+import com.woniu.spring.beans.PropertyValues;
 
 /**
  * @Author: zhangcheng

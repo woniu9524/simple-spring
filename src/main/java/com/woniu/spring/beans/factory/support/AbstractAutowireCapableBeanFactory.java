@@ -1,12 +1,10 @@
-package com.woniu.spring.factory.support;
+package com.woniu.spring.beans.factory.support;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.sun.jmx.snmp.BerException;
-import com.woniu.spring.PropertyValue;
-import com.woniu.spring.PropertyValues;
-import com.woniu.spring.exception.BeansException;
-import com.woniu.spring.factory.config.BeanDefinition;
-import com.woniu.spring.factory.config.BeanReference;
+import com.woniu.spring.beans.PropertyValue;
+import com.woniu.spring.beans.PropertyValues;
+import com.woniu.spring.beans.factory.config.BeanDefinition;
+import com.woniu.spring.beans.factory.config.BeanReference;
 
 import java.lang.reflect.Constructor;
 

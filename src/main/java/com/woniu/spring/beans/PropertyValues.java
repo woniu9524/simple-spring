@@ -1,4 +1,4 @@
-package com.woniu.spring;
+package com.woniu.spring.beans;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +25,7 @@ public class PropertyValues {
     }
 
     public PropertyValue[] getPropertyValues(){
+        //toArray(T[] a)指定转化后的泛型
         return this.propertyValueList.toArray(new PropertyValue[0]);
     }
 }

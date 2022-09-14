@@ -1,6 +1,9 @@
-package com.woniu.spring.factory.support;
+package com.woniu.spring.beans.factory.support;
 
-import com.woniu.spring.factory.config.SingletonBeanRegistry;
+import com.woniu.spring.beans.factory.config.SingletonBeanRegistry;
+import com.woniu.spring.core.io.Resource;
+import com.woniu.spring.core.io.ResourceLoader;
+import com.woniu.spring.exception.BeansException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,4 +27,5 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
     protected void addSingleton(String beanName, Object singletonObject) {
         singletonObjects.put(beanName, singletonObject);
     }
+
 }

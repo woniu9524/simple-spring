@@ -1,4 +1,4 @@
-package com.woniu.spring.factory.config;
+package com.woniu.spring.beans.factory.config;
 
 //单例注册接口定义
 public interface SingletonBeanRegistry {

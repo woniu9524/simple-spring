@@ -1,4 +1,4 @@
-package com.woniu.spring.factory.config;
+package com.woniu.spring.beans.factory.config;
 
 /**
  * @Author: zhangcheng

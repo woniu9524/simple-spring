@@ -1,12 +1,11 @@
-package com.woniu.spring.factory.support;
+package com.woniu.spring.beans.factory.support;
 
 import com.woniu.spring.exception.BeansException;
-import com.woniu.spring.factory.config.BeanDefinition;
+import com.woniu.spring.beans.factory.config.BeanDefinition;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.NoOp;
 
 import java.lang.reflect.Constructor;
-import java.util.HashMap;
 
 /**
  * @Author: zhangcheng

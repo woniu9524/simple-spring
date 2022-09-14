@@ -1,8 +1,8 @@
-package com.woniu.spring.factory.support;
+package com.woniu.spring.beans.factory.support;
 
 import com.woniu.spring.exception.BeansException;
-import com.woniu.spring.factory.config.BeanDefinition;
-import com.woniu.spring.BeanFactory;
+import com.woniu.spring.beans.factory.config.BeanDefinition;
+import com.woniu.spring.beans.BeanFactory;
 
 /**
  * @Author: zhangcheng
@@ -24,7 +24,12 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
         return doGetBean(beanName,args);
     }
 
-    protected <T> T doGetBean(final String beanName,final Object[] args){
+    @Override
+    public <T> T getBean(String beanName, Class<T> requiredType) throws BeansException {
+        return (T) getBean(beanName);
+    }
+
+    protected <T> T doGetBean(final String beanName, final Object[] args){
         //从单例池中获取bean
         Object bean=getSingleton(beanName);
         if (bean!=null){

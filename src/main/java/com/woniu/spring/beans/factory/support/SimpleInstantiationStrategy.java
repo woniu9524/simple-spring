@@ -1,7 +1,7 @@
-package com.woniu.spring.factory.support;
+package com.woniu.spring.beans.factory.support;
 
 import com.woniu.spring.exception.BeansException;
-import com.woniu.spring.factory.config.BeanDefinition;
+import com.woniu.spring.beans.factory.config.BeanDefinition;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

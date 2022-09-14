@@ -1,4 +1,4 @@
-package com.woniu.spring;
+package com.woniu.spring.beans;
 
 /**
  * @Author: zhangcheng
