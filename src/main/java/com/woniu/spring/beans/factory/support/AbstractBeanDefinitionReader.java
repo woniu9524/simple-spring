@@ -2,6 +2,7 @@ package com.woniu.spring.beans.factory.support;
 
 import com.woniu.spring.core.io.DefaultResourceLoader;
 import com.woniu.spring.core.io.ResourceLoader;
+import com.woniu.spring.exception.BeansException;
 
 /**
  * @Author: zhangcheng
@@ -32,4 +33,5 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
         return resourceLoader;
     }
 
+    public abstract void loadBeanDefinitions(String... locations) throws BeansException;
 }

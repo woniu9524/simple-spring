@@ -5,7 +5,12 @@
 
     <bean id="userService" class="com.woniu.spring.UserService">
         <property name="uId" value="10001"/>
+        <property name="company" value="腾讯"/>
+        <property name="location" value="深圳"/>
         <property name="userDao" ref="userDao"/>
     </bean>
+
+    <bean class="com.woniu.spring.MyBeanPostProcessor"/>
+    <bean class="com.woniu.spring.MyBeanFactoryPostProcessor"/>
 
 </beans>
