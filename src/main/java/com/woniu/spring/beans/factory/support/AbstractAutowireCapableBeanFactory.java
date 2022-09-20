@@ -1,15 +1,20 @@
 package com.woniu.spring.beans.factory.support;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.woniu.spring.beans.PropertyValue;
 import com.woniu.spring.beans.PropertyValues;
 import com.woniu.spring.beans.factory.config.AutowireCapableBeanFactory;
 import com.woniu.spring.beans.factory.config.BeanDefinition;
 import com.woniu.spring.beans.factory.config.BeanPostProcessor;
 import com.woniu.spring.beans.factory.config.BeanReference;
+import com.woniu.spring.beans.factory.xml.DisposableBean;
+import com.woniu.spring.beans.factory.xml.DisposableBeanAdapter;
+import com.woniu.spring.beans.factory.xml.InitializingBean;
 import com.woniu.spring.exception.BeansException;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 /**
  * @Author: zhangcheng
@@ -33,12 +38,16 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             // 执行 Bean 的初始化方法和 BeanPostProcessor 的前置和后置处理方法
             bean = initializeBean(beanName, bean, beanDefinition);
 
-            //放到单例池中
-            addSingleton(beanName,bean);
-
         }catch (Exception e){
             throw new BeansException("初始化bean失败:"+e.getMessage(),e);
         }
+
+        // 注册实现了 DisposableBean 接口的 Bean 对象
+        registerDisposableBeanIfNecessary(beanName, bean, beanDefinition);
+
+        //放到单例池中
+        addSingleton(beanName,bean);
+
         return bean;
     }
 
@@ -92,7 +101,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
      * @return: java.lang.Object
      * @description:初始化bean方法
      **/
-    private Object initializeBean(String beanName, Object bean, BeanDefinition beanDefinition) {
+    private Object initializeBean(String beanName, Object bean, BeanDefinition beanDefinition) throws Exception {
         // 1. 执行 BeanPostProcessor Before 处理
         Object wrappedBean = applyBeanPostProcessorsBeforeInitialization(bean, beanName);
 
@@ -100,12 +109,26 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         invokeInitMethods(beanName, wrappedBean, beanDefinition);
 
         // 2. 执行 BeanPostProcessor After 处理
-        wrappedBean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
+        wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
         return wrappedBean;
     }
 
-    private void invokeInitMethods(String beanName, Object wrappedBean, BeanDefinition beanDefinition) {
+    private void invokeInitMethods(String beanName, Object bean, BeanDefinition beanDefinition) throws Exception {
+        // 1. 实现接口 InitializingBean
+        if (bean instanceof InitializingBean) {
+            ((InitializingBean) bean).afterPropertiesSet();
+        }
 
+        // 2. 配置信息 init-method {判断是为了避免二次执行销毁}
+        String initMethodName = beanDefinition.getInitMethodName();
+        //TODO 此处原来的代码应该是漏了判断
+        if (StrUtil.isNotEmpty(initMethodName)&&!(bean instanceof InitializingBean && "afterPropertiesSet".equals(initMethodName))) {
+            Method initMethod = beanDefinition.getBeanClass().getMethod(initMethodName);
+            if (null == initMethod) {
+                throw new BeansException("Could not find an init method named '" + initMethodName + "' on bean with name '" + beanName + "'");
+            }
+            initMethod.invoke(bean);
+        }
     }
 
     /*
@@ -147,4 +170,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         }
         return result;
     }
+
+    protected void registerDisposableBeanIfNecessary(String beanName, Object bean, BeanDefinition beanDefinition) {
+        if (bean instanceof DisposableBean || StrUtil.isNotEmpty(beanDefinition.getDestroyMethodName())) {
+            registerDisposableBean(beanName, new DisposableBeanAdapter(bean, beanName, beanDefinition));
+        }
+    }
+
 }
