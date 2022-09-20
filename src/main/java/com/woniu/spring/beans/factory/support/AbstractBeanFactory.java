@@ -5,6 +5,7 @@ import com.woniu.spring.beans.factory.config.ConfigurableBeanFactory;
 import com.woniu.spring.exception.BeansException;
 import com.woniu.spring.beans.factory.config.BeanDefinition;
 import com.woniu.spring.beans.factory.xml.BeanFactory;
+import com.woniu.spring.utils.ClassUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
  */
 public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory {
 
+    private ClassLoader beanClassLoader = ClassUtils.getDefaultClassLoader();
     /** BeanPostProcessors to apply in createBean */
     private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<BeanPostProcessor>();
 
@@ -76,6 +78,10 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
      **/
     public List<BeanPostProcessor> getBeanPostProcessors() {
         return this.beanPostProcessors;
+    }
+
+    public ClassLoader getBeanClassLoader() {
+        return this.beanClassLoader;
     }
 
 }

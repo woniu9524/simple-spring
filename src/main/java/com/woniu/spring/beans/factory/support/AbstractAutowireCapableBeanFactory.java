@@ -8,9 +8,7 @@ import com.woniu.spring.beans.factory.config.AutowireCapableBeanFactory;
 import com.woniu.spring.beans.factory.config.BeanDefinition;
 import com.woniu.spring.beans.factory.config.BeanPostProcessor;
 import com.woniu.spring.beans.factory.config.BeanReference;
-import com.woniu.spring.beans.factory.xml.DisposableBean;
-import com.woniu.spring.beans.factory.xml.DisposableBeanAdapter;
-import com.woniu.spring.beans.factory.xml.InitializingBean;
+import com.woniu.spring.beans.factory.xml.*;
 import com.woniu.spring.exception.BeansException;
 
 import java.lang.reflect.Constructor;
@@ -114,6 +112,20 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     }
 
     private void invokeInitMethods(String beanName, Object bean, BeanDefinition beanDefinition) throws Exception {
+        // invokeAwareMethods
+        if (bean instanceof Aware) {
+            if (bean instanceof BeanFactoryAware) {
+                ((BeanFactoryAware) bean).setBeanFactory(this);
+            }
+            if (bean instanceof BeanClassLoaderAware){
+                ((BeanClassLoaderAware) bean).setBeanClassLoader(getBeanClassLoader());
+            }
+            if (bean instanceof BeanNameAware) {
+                ((BeanNameAware) bean).setBeanName(beanName);
+            }
+        }
+
+
         // 1. 实现接口 InitializingBean
         if (bean instanceof InitializingBean) {
             ((InitializingBean) bean).afterPropertiesSet();
