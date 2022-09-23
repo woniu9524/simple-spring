@@ -1,4 +1,4 @@
-package com.woniu.spring.beans.factory.xml;
+package com.woniu.spring.beans.factory;
 
 import com.woniu.spring.exception.BeansException;
 

@@ -3,7 +3,7 @@ package com.woniu.spring.beans.context.support;
 import com.woniu.spring.beans.context.ConfigurableApplicationContext;
 import com.woniu.spring.beans.factory.config.BeanFactoryPostProcessor;
 import com.woniu.spring.beans.factory.config.BeanPostProcessor;
-import com.woniu.spring.beans.factory.xml.ConfigurableListableBeanFactory;
+import com.woniu.spring.beans.factory.ConfigurableListableBeanFactory;
 import com.woniu.spring.core.io.DefaultResourceLoader;
 import com.woniu.spring.exception.BeansException;
 

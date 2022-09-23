@@ -1,6 +1,6 @@
 package com.woniu.spring.beans.factory.config;
 
-import com.woniu.spring.beans.factory.xml.HierarchicalBeanFactory;
+import com.woniu.spring.beans.factory.HierarchicalBeanFactory;
 
 public interface ConfigurableBeanFactory extends HierarchicalBeanFactory, SingletonBeanRegistry {
 

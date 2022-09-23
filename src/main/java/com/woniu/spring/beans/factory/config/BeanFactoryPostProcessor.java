@@ -1,6 +1,6 @@
 package com.woniu.spring.beans.factory.config;
 
-import com.woniu.spring.beans.factory.xml.ConfigurableListableBeanFactory;
+import com.woniu.spring.beans.factory.ConfigurableListableBeanFactory;
 import com.woniu.spring.exception.BeansException;
 
 /**

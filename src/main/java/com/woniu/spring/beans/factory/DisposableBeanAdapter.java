@@ -1,4 +1,4 @@
-package com.woniu.spring.beans.factory.xml;
+package com.woniu.spring.beans.factory;
 
 import cn.hutool.core.util.StrUtil;
 import com.woniu.spring.beans.factory.config.BeanDefinition;

@@ -1,4 +1,4 @@
-package com.woniu.spring.beans.factory.xml;
+package com.woniu.spring.beans.factory;
 
 import com.woniu.spring.beans.factory.config.AutowireCapableBeanFactory;
 import com.woniu.spring.beans.factory.config.BeanDefinition;

@@ -1,9 +1,7 @@
 package com.woniu.spring.beans.factory.support;
 
 import com.woniu.spring.beans.factory.config.SingletonBeanRegistry;
-import com.woniu.spring.beans.factory.xml.DisposableBean;
-import com.woniu.spring.core.io.Resource;
-import com.woniu.spring.core.io.ResourceLoader;
+import com.woniu.spring.beans.factory.DisposableBean;
 import com.woniu.spring.exception.BeansException;
 
 import java.util.HashMap;
@@ -16,6 +14,9 @@ import java.util.Set;
  * @Description: 默认单例bean注册
  */
 public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
+
+    protected static final Object NULL_OBJECT = new Object();
+
     //单例池
     private Map<String, Object> singletonObjects = new HashMap<>();
     //需要实现销毁方法的适配器对象

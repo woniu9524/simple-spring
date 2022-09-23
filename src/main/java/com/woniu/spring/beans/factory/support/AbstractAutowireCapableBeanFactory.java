@@ -4,11 +4,11 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.woniu.spring.beans.PropertyValue;
 import com.woniu.spring.beans.PropertyValues;
+import com.woniu.spring.beans.factory.*;
 import com.woniu.spring.beans.factory.config.AutowireCapableBeanFactory;
 import com.woniu.spring.beans.factory.config.BeanDefinition;
 import com.woniu.spring.beans.factory.config.BeanPostProcessor;
 import com.woniu.spring.beans.factory.config.BeanReference;
-import com.woniu.spring.beans.factory.xml.*;
 import com.woniu.spring.exception.BeansException;
 
 import java.lang.reflect.Constructor;
@@ -43,9 +43,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         // 注册实现了 DisposableBean 接口的 Bean 对象
         registerDisposableBeanIfNecessary(beanName, bean, beanDefinition);
 
-        //放到单例池中
-        addSingleton(beanName,bean);
-
+        // 判断 SCOPE_SINGLETON、SCOPE_PROTOTYPE
+        if (beanDefinition.isSingleton()) {
+            //放到单例池中
+            addSingleton(beanName, bean);
+        }
         return bean;
     }
 
@@ -184,6 +186,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     }
 
     protected void registerDisposableBeanIfNecessary(String beanName, Object bean, BeanDefinition beanDefinition) {
+        // 非 Singleton 类型的 Bean 不执行销毁方法
+        if (!beanDefinition.isSingleton()) return;
+
         if (bean instanceof DisposableBean || StrUtil.isNotEmpty(beanDefinition.getDestroyMethodName())) {
             registerDisposableBean(beanName, new DisposableBeanAdapter(bean, beanName, beanDefinition));
         }
