@@ -10,4 +10,8 @@
 
     <bean id="proxyUserDao" class="com.woniu.spring.test.beans.ProxyBeanFactory"/>
 
+    <bean class="com.woniu.spring.test.event.ContextClosedEventListener" />
+    <bean class="com.woniu.spring.test.event.ContextRefreshedEventListener" />
+    <bean class="com.woniu.spring.test.event.CustomEventListener" />
+
 </beans>
