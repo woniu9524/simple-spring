@@ -15,4 +15,6 @@ public interface BeanFactory {
 
     //泛型，这样就不用强制类型转换了
     <T> T getBean(String name, Class<T> requiredType) throws BeansException;
+
+    <T> T getBean(Class<T> requiredType) throws BeansException;
 }

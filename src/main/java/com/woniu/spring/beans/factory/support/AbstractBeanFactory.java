@@ -6,6 +6,7 @@ import com.woniu.spring.beans.factory.config.ConfigurableBeanFactory;
 import com.woniu.spring.exception.BeansException;
 import com.woniu.spring.beans.factory.config.BeanDefinition;
 import com.woniu.spring.utils.ClassUtils;
+import com.woniu.spring.utils.StringValueResolver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,8 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
     /** BeanPostProcessors to apply in createBean */
     private final List<BeanPostProcessor> beanPostProcessors = new ArrayList<BeanPostProcessor>();
 
-
+    // 要应用的字符串解析器，例如注释属性值
+    private final List<StringValueResolver> embeddedValueResolvers = new ArrayList<>();
 
 
     @Override
@@ -85,6 +87,22 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
     public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor){
         this.beanPostProcessors.remove(beanPostProcessor);
         this.beanPostProcessors.add(beanPostProcessor);
+    }
+
+    // 添加嵌入值的处理者
+    @Override
+    public void addEmbeddedValueResolver(StringValueResolver valueResolver) {
+        this.embeddedValueResolvers.add(valueResolver);
+    }
+
+    //处理嵌入内容
+    @Override
+    public String resolveEmbeddedValue(String value) {
+        String result = value;
+        for (StringValueResolver resolver : this.embeddedValueResolvers) {
+            result = resolver.resolveStringValue(result);
+        }
+        return result;
     }
 
 

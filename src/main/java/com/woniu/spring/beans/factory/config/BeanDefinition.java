@@ -20,6 +20,8 @@ public class BeanDefinition {
 
     String SCOPE_PROTOTYPE = ConfigurableBeanFactory.SCOPE_PROTOTYPE;
 
+    private String scope = SCOPE_SINGLETON;
+
     private boolean singleton = true;
 
     private boolean prototype = false;
@@ -32,6 +34,16 @@ public class BeanDefinition {
     public BeanDefinition(Class beanClass,PropertyValues propertyValues) {
         this.beanClass = beanClass;
         this.propertyValues=propertyValues==null?new PropertyValues():propertyValues;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+        this.singleton = SCOPE_SINGLETON.equals(scope);
+        this.prototype = SCOPE_PROTOTYPE.equals(scope);
+    }
+
+    public String getScope() {
+        return scope;
     }
 
     public Class getBeanClass() {

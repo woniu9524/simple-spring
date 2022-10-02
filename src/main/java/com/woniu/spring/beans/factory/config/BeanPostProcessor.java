@@ -1,5 +1,6 @@
 package com.woniu.spring.beans.factory.config;
 
+import com.woniu.spring.beans.PropertyValues;
 import com.woniu.spring.exception.BeansException;
 
 //用于修改新实例化bean对象的扩展点
@@ -24,6 +25,7 @@ public interface BeanPostProcessor {
      * @throws BeansException
      */
     Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException;
+
 
 }
 

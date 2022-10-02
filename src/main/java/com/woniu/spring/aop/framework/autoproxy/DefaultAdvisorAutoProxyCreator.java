@@ -3,6 +3,7 @@ package com.woniu.spring.aop.framework.autoproxy;
 import com.woniu.spring.TargetSource;
 import com.woniu.spring.aop.*;
 import com.woniu.spring.aop.aspectj.AspectJExpressionPointcutAdvisor;
+import com.woniu.spring.beans.PropertyValues;
 import com.woniu.spring.beans.factory.BeanFactory;
 import com.woniu.spring.beans.factory.BeanFactoryAware;
 import com.woniu.spring.beans.factory.support.DefaultListableBeanFactory;
@@ -72,6 +73,11 @@ public class DefaultAdvisorAutoProxyCreator implements InstantiationAwareBeanPos
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         return bean;
+    }
+
+    @Override
+    public PropertyValues postProcessPropertyValues(PropertyValues pvs, Object bean, String beanName) throws BeansException {
+        return pvs;
     }
 
 }
